@@ -7,14 +7,28 @@
 </template>
 
 <script>
-import NavBar from 'components/common/navbar/NavBar'
+import NavBar from "components/common/navbar/NavBar";
+import { getHomeMultiData } from "network/home";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    NavBar
-  }
-}
+    NavBar,
+  },
+  data() {
+    return {
+      banners: [],
+      recommends: [],
+    };
+  },
+  created() {
+    // 1.请求多个数据
+    getHomeMultiData().then((res) => {
+      this.banners = res.data.banner.list;
+      this.recommends = res.data.recommend.list;
+    });
+  },
+};
 </script>
 
 <style scoped>
