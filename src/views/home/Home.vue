@@ -6,8 +6,9 @@
     <home-swiper :banners="banners"></home-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-view></feature-view>
+    <tab-control class="tab-control" :titles="['流行', '新款', '精选']"></tab-control>
 
-    <ui>
+    <ul>
       <li>列表1</li>
       <li>列表2</li>
       <li>列表3</li>
@@ -58,75 +59,29 @@
       <li>列表48</li>
       <li>列表49</li>
       <li>列表50</li>
-      <li>列表51</li>
-      <li>列表52</li>
-      <li>列表53</li>
-      <li>列表54</li>
-      <li>列表55</li>
-      <li>列表56</li>
-      <li>列表57</li>
-      <li>列表58</li>
-      <li>列表59</li>
-      <li>列表60</li>
-      <li>列表61</li>
-      <li>列表62</li>
-      <li>列表63</li>
-      <li>列表64</li>
-      <li>列表65</li>
-      <li>列表66</li>
-      <li>列表67</li>
-      <li>列表68</li>
-      <li>列表69</li>
-      <li>列表70</li>
-      <li>列表71</li>
-      <li>列表72</li>
-      <li>列表73</li>
-      <li>列表74</li>
-      <li>列表75</li>
-      <li>列表76</li>
-      <li>列表77</li>
-      <li>列表78</li>
-      <li>列表79</li>
-      <li>列表80</li>
-      <li>列表81</li>
-      <li>列表82</li>
-      <li>列表83</li>
-      <li>列表84</li>
-      <li>列表85</li>
-      <li>列表86</li>
-      <li>列表87</li>
-      <li>列表88</li>
-      <li>列表89</li>
-      <li>列表90</li>
-      <li>列表91</li>
-      <li>列表92</li>
-      <li>列表93</li>
-      <li>列表94</li>
-      <li>列表95</li>
-      <li>列表96</li>
-      <li>列表97</li>
-      <li>列表98</li>
-      <li>列表99</li>
-      <li>列表100</li>
-    </ui>
+    </ul>
   </div>
 </template>
 
 <script>
-import NavBar from "components/common/navbar/NavBar"
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RcommendView"
 import FeatureView from './childComps/FeatureView';
+
+import NavBar from "components/common/navbar/NavBar"
+import TabControl from "components/content/tabcontrol/TabControl"
 
 import { getHomeMultiData } from "network/home"
 
 export default {
   name: "Home",
   components: {
-    NavBar,
     HomeSwiper,
     RecommendView,
-    FeatureView
+    FeatureView,
+
+    NavBar,
+    TabControl,
   },
   data() {
     return {
@@ -159,5 +114,11 @@ export default {
   left: 0;
   right: 0;
   z-index: 1;
+}
+
+.tab-control {
+  /* 吸顶效果 */
+  position: sticky;
+  top: 40px;
 }
 </style>
