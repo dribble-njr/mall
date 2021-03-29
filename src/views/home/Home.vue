@@ -6,7 +6,10 @@
     <home-swiper :banners="banners"></home-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-view></feature-view>
-    <tab-control class="tab-control" :titles="['流行', '新款', '精选']"></tab-control>
+    <tab-control
+      class="tab-control"
+      :titles="['流行', '新款', '精选']"
+    ></tab-control>
 
     <ul>
       <li>列表1</li>
@@ -65,13 +68,13 @@
 
 <script>
 import HomeSwiper from "./childComps/HomeSwiper";
-import RecommendView from "./childComps/RcommendView"
-import FeatureView from './childComps/FeatureView';
+import RecommendView from "./childComps/RcommendView";
+import FeatureView from "./childComps/FeatureView";
 
-import NavBar from "components/common/navbar/NavBar"
-import TabControl from "components/content/tabcontrol/TabControl"
+import NavBar from "components/common/navbar/NavBar";
+import TabControl from "components/content/tabcontrol/TabControl";
 
-import { getHomeMultiData } from "network/home"
+import { getHomeMultiData, getHomeGoods } from "network/home";
 
 export default {
   name: "Home",
@@ -87,15 +90,38 @@ export default {
     return {
       banners: [],
       recommends: [],
+      goods: {
+        pop: { page: 0, list: [] },
+        new: { page: 0, list: [] },
+        sell: { page: 0, list: [] },
+      },
     };
   },
   created() {
     // 1.请求多个数据
-    getHomeMultiData().then((res) => {
-      console.log(res);
-      this.banners = res.data.banner.list;
-      this.recommends = res.data.recommend.list;
-    });
+    this.getHomeMultiData();
+
+    // 2.请求商品数据
+    this.getHomeGoods("pop");
+    this.getHomeGoods("new");
+    this.getHomeGoods("sell");
+  },
+  methods: {
+    getHomeMultiData() {
+      getHomeMultiData().then((res) => {
+        this.banners = res.data.banner.list;
+        this.recommends = res.data.recommend.list;
+      });
+    },
+
+    getHomeGoods(type) {
+      const page = this.goods[type].page + 1;
+
+      getHomeGoods(type, page).then((res) => {
+        this.goods[type].list.push(...res.data.list);
+        this.goods[type].page += 1;
+      });
+    },
   },
 };
 </script>
@@ -108,7 +134,7 @@ export default {
 .home-nav {
   background-color: var(--color-tint);
   color: #ffffff;
-  
+
   position: fixed;
   top: 0;
   left: 0;
