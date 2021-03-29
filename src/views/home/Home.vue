@@ -9,9 +9,10 @@
     <tab-control
       class="tab-control"
       :titles="['流行', '新款', '精选']"
+      @tabClick="tabClick"
     ></tab-control>
 
-    <goods-list :goods="this.goods['pop'].list"></goods-list>
+    <goods-list :goods="showGoods"></goods-list>
     <ul>
       <li>列表1</li>
       <li>列表2</li>
@@ -98,7 +99,13 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
+      currentType: 'pop',
     };
+  },
+  computed: {
+    showGoods() {
+      return this.goods[this.currentType].list;
+    }
   },
   created() {
     // 1.请求多个数据
@@ -110,6 +117,9 @@ export default {
     this.getHomeGoods("sell");
   },
   methods: {
+    /**
+     * 网络请求相关方法
+     */
     getHomeMultiData() {
       getHomeMultiData().then((res) => {
         this.banners = res.data.banner.list;
@@ -117,6 +127,7 @@ export default {
       });
     },
 
+    
     getHomeGoods(type) {
       const page = this.goods[type].page + 1;
 
@@ -125,6 +136,23 @@ export default {
         this.goods[type].page += 1;
       });
     },
+
+    /**
+     * 事件监听相关方法
+     */
+    tabClick(index) {
+      switch (index) {
+        case 0:
+          this.currentType = 'pop'
+          break
+        case 1:
+          this.currentType = 'new'
+          break
+        case 2:
+          this.currentType = 'sell'
+          break
+      }
+    }
   },
 };
 </script>
