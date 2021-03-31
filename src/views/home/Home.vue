@@ -14,6 +14,8 @@
         @tabClick="tabClick"/>
       <goods-list :goods="showGoods"/>
     </scroll>
+
+    <back-top></back-top>
   </div>
 </template>
 
@@ -26,6 +28,7 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabcontrol/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from 'components/common/scroll/Scroll.vue';
+import BackTop from 'components/common/backtop/BackTop'
 
 import { getHomeMultiData, getHomeGoods } from "network/home";
 
@@ -40,6 +43,7 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
+    BackTop,
   },
   data() {
     return {
@@ -111,6 +115,7 @@ export default {
 <style scoped>
 #home {
   height: 100vh;
+  overflow: hidden;
 }
 
 .home-nav {
