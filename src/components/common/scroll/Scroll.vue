@@ -27,8 +27,10 @@ export default {
       this.scroll.on("beforeScrollStart", () => {
         this.scroll.refresh();
       });
+    },
 
-      console.log(this.scroll);
+    scrollTo(x, y, time = 300) {
+      this.scroll.scrollTo(x, y, time);
     },
   },
 };
