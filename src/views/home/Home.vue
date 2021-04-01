@@ -4,6 +4,14 @@
       <div slot="center">购物街</div>
     </nav-bar>
 
+    <tab-control
+      :titles="['流行', '新款', '精选']"
+      @tabClick="changeTab"
+      ref="tabControl"
+      class="tab-control"
+      v-show="isTabFixed"
+    />
+
     <scroll
       class="wrapper"
       ref="scroll"
@@ -13,13 +21,14 @@
       :pullUpLoad="true"
       @pullingUp="handlePullUp"
     >
-      <home-swiper :banners="banners" />
+      <home-swiper :banners="banners" @swipperImageLoad="swipperImageLoad" />
       <recommend-view :recommends="recommends" />
       <feature-view />
       <tab-control
-        class="tab-control"
         :titles="['流行', '新款', '精选']"
         @tabClick="changeTab"
+        ref="tabControl"
+        v-show="!isTabFixed"
       />
       <goods-list :goods="showGoods" />
     </scroll>
@@ -65,6 +74,8 @@ export default {
       },
       currentType: "pop",
       isShowBackTop: false,
+      tabOffsetTop: 0,
+      isTabFixed: false,
     };
   },
   computed: {
@@ -136,11 +147,18 @@ export default {
 
     handleScroll(pos) {
       this.isShowBackTop = -pos.y > 1000;
+
+      this.isTabFixed = -pos.y > this.tabOffsetTop - 44
     },
 
     handlePullUp() {
       this.getHomeGoods(this.currentType)
     },
+
+    swipperImageLoad() {
+      this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop
+      console.log(this.tabOffsetTop);
+    }
   },
 };
 </script>
@@ -155,26 +173,19 @@ export default {
   background-color: var(--color-tint);
   color: #ffffff;
 
-  position: fixed;
+  /* 在浏览器原生滚动时， */
+  /* position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1;
-}
-
-.tab-control {
-  /* 吸顶效果 */
-  position: sticky;
-  top: 40px;
-  z-index: 9;
+  z-index: 1; */
 }
 
 .wrapper {
   height: calc(100% - 93px);
-  margin-top: 44px;
 }
 
-/* 方法二 */
+/* 滚动方法二 */
 /* #home {
   padding-top: 44px;
   height: 100vh;
