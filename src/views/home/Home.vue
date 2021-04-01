@@ -7,8 +7,7 @@
     <tab-control
       :titles="['流行', '新款', '精选']"
       @tabClick="changeTab"
-      ref="tabControl"
-      class="tab-control"
+      ref="tabControl1"
       v-show="isTabFixed"
     />
 
@@ -27,7 +26,7 @@
       <tab-control
         :titles="['流行', '新款', '精选']"
         @tabClick="changeTab"
-        ref="tabControl"
+        ref="tabControl2"
         v-show="!isTabFixed"
       />
       <goods-list :goods="showGoods" />
@@ -139,6 +138,8 @@ export default {
           this.currentType = "sell";
           break;
       }
+      this.$refs.tabControl1.currentIndex = index;
+      this.$refs.tabControl2.currentIndex = index;
     },
 
     backTop() {
@@ -156,7 +157,7 @@ export default {
     },
 
     swipperImageLoad() {
-      this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
       console.log(this.tabOffsetTop);
     }
   },
