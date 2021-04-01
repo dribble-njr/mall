@@ -88,7 +88,7 @@ export default {
       // 是否上拉加载
       if (this.pullUpLoad) {
         this.scroll.on("pullingUp", () => {
-          this.$emit('pullingUp');
+          this.$emit("pullingUp");
           this.scroll.finishPullUp();
         });
       }
@@ -101,7 +101,11 @@ export default {
     refresh() {
       // 等scroll加载完成
       this.scroll && this.scroll.refresh();
-    }
+    },
+
+    getScrollY() {
+      return this.scroll ? this.scroll.y : 0;
+    },
   },
 };
 </script>

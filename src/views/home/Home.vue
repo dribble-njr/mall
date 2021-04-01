@@ -91,6 +91,14 @@ export default {
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
   },
+  // 回到定位位置
+  activated () {
+    this.$refs.scroll.scrollTo(0, this.saveY, 0)
+  },
+  // 记录离开首页此时的高度
+  deactivated () {
+    this.saveY = this.$refs.scroll.getScrollY()
+  },
   mounted() {
     /**
      * Note 
@@ -157,8 +165,7 @@ export default {
     },
 
     swipperImageLoad() {
-      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
-      console.log(this.tabOffsetTop);
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
     }
   },
 };
