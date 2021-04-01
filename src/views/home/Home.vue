@@ -9,7 +9,7 @@
       @tabClick="changeTab"
       ref="tabControl1"
       v-show="isTabFixed"
-    />
+    /> 
 
     <scroll
       class="wrapper"
