@@ -4,18 +4,27 @@
       <div slot="center">购物街</div>
     </nav-bar>
 
-    <scroll class="wrapper">
-      <home-swiper :banners="banners"/>
-      <recommend-view :recommends="recommends"/>
-      <feature-view/>
+    <scroll
+      class="wrapper"
+      ref="scroll"
+      :probeType="3"
+      :listenScroll="true"
+      @scroll="handleScroll"
+      :pullUpLoad="true"
+      @pullingUp="handlePullUp"
+    >
+      <home-swiper :banners="banners" />
+      <recommend-view :recommends="recommends" />
+      <feature-view />
       <tab-control
         class="tab-control"
         :titles="['流行', '新款', '精选']"
-        @tabClick="tabClick"/>
-      <goods-list :goods="showGoods"/>
+        @tabClick="changeTab"
+      />
+      <goods-list :goods="showGoods" />
     </scroll>
 
-    <back-top></back-top>
+    <back-top @click.native="backTop" v-show="isShowBackTop" />
   </div>
 </template>
 
@@ -27,8 +36,8 @@ import FeatureView from "./childComps/FeatureView";
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabcontrol/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
-import Scroll from 'components/common/scroll/Scroll.vue';
-import BackTop from 'components/common/backtop/BackTop'
+import Scroll from "components/common/scroll/Scroll.vue";
+import BackTop from "components/content/backtop/BackTop";
 
 import { getHomeMultiData, getHomeGoods } from "network/home";
 
@@ -54,13 +63,14 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
-      currentType: 'pop',
+      currentType: "pop",
+      isShowBackTop: false,
     };
   },
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
-    }
+    },
   },
   created() {
     // 1.请求多个数据
@@ -70,6 +80,18 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
+  },
+  mounted() {
+    /**
+     * Note 
+     * 监听图片加载完成，再调用refresh重新刷新
+     * 先暂定用这种方法
+     * 不应放在created中，因为那时可能还没加载完dom
+     */
+    this.$bus.$on('itemImageLoad', () => {
+      // console.log('------');
+      this.$refs.scroll.refresh();
+    })
   },
   methods: {
     /**
@@ -82,7 +104,6 @@ export default {
       });
     },
 
-    
     getHomeGoods(type) {
       const page = this.goods[type].page + 1;
 
@@ -95,19 +116,31 @@ export default {
     /**
      * 事件监听相关方法
      */
-    tabClick(index) {
+    changeTab(index) {
       switch (index) {
         case 0:
-          this.currentType = 'pop'
-          break
+          this.currentType = "pop";
+          break;
         case 1:
-          this.currentType = 'new'
-          break
+          this.currentType = "new";
+          break;
         case 2:
-          this.currentType = 'sell'
-          break
+          this.currentType = "sell";
+          break;
       }
-    }
+    },
+
+    backTop() {
+      this.$refs.scroll.scrollTo(0, 0);
+    },
+
+    handleScroll(pos) {
+      this.isShowBackTop = -pos.y > 1000;
+    },
+
+    handlePullUp() {
+      this.getHomeGoods(this.currentType)
+    },
   },
 };
 </script>
