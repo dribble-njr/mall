@@ -1,11 +1,11 @@
 <template>
   <div id="detail">
     <detail-nav-bar/>
-    <scroll class="wrapper">
+    <scroll class="wrapper" ref="scroll">
       <detail-swiper :topImages="topImages" />
       <detail-base-info :goodsInfo="goodsInfo"/>
       <detail-shop-info :shopInfo="shopInfo"/>
-      <detail-goods-info :detailInfo="detailInfo"/>
+      <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad"/>
     </scroll>
   </div>
 </template>
@@ -66,6 +66,9 @@ export default {
         // 5.商品信息
         this.detailInfo = data.detailInfo
       })
+    },
+    imageLoad() {
+      this.$refs.scroll.refresh();
     }
   }
 }
