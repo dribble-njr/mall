@@ -56,7 +56,11 @@ export default {
   created() {
     this._initDetail()
   },
-
+  mounted() {
+    this.$bus.$on('detailItemImageLoad', () => {
+      this.$refs.scroll.refresh();
+    })
+  },
   methods: {
     _initDetail() {
       this.iid = this.$route.query.iid

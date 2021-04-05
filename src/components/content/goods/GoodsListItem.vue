@@ -25,7 +25,12 @@ export default {
      * 配合scroll使用，监听图片加载完成
      */
     imageLoad() {
-      this.$bus.$emit('itemImageLoad')
+      if (this.$route.path.indexOf('/home') !== -1) {
+        this.$bus.$emit('homeItemImageLoad')
+      } else if (this.$route.path.indexOf('/detail') !== -1) {
+        this.$bus.$emit('detailItemImageLoad')
+      }
+      
     },
     itemClick() {
       this.$router.push({
