@@ -60,11 +60,6 @@ export default {
       this._initScroll()
     }, 20)
   },
-  /**
-   * Note
-   * 这种方法应该不用监听每张图片加载完成时进行refresh，而是直接在开始滚动前进行刷新
-   * 这样做能减少监听次数，否则每一张图片加载完都会刷新，应该会影响性能
-   */
   updated() {
     this.scroll.refresh();
   },
