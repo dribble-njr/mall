@@ -55,10 +55,21 @@ export default {
     };
   },
   mounted() {
-    this.initScroll();
+    // 保证在DOM渲染完毕后初始化better-scroll
+    setTimeout(() => {
+      this._initScroll()
+    }, 20)
+  },
+  /**
+   * Note
+   * 这种方法应该不用监听每张图片加载完成时进行refresh，而是直接在开始滚动前进行刷新
+   * 这样做能减少监听次数，否则每一张图片加载完都会刷新，应该会影响性能
+   */
+  updated() {
+    this.scroll.refresh();
   },
   methods: {
-    initScroll() {
+    _initScroll() {
       // bs初始化
       this.scroll = new BScroll(this.$refs.wrapper, {
         click: this.click,
@@ -66,17 +77,6 @@ export default {
         pullUpLoad: this.pullUpLoad,
         pullDownLoad: this.pullDownLoad,
       });
-
-      /**
-       * Note
-       * 这种方法应该不用监听每张图片加载完成时进行refresh，而是直接在开始滚动前进行刷新
-       * 这样做能减少监听次数，否则每一张图片加载完都会刷新，应该会影响性能
-       * 但还是先按照coderwhy老师的先写
-       */
-      // this.scroll.on("beforeScrollStart", () => {
-      //   console.log('---');
-      //   this.refresh();
-      // });
 
       // 是否派发滚动事件
       if (this.listenScroll) {
