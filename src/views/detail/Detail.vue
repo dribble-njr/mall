@@ -3,6 +3,7 @@
     <detail-nav-bar/>
     <detail-swiper :topImages="topImages" />
     <detail-goods-info :goodsInfo="goodsInfo"/>
+    <detail-shop-info :shopInfo="shopInfo"/>
   </div>
 </template>
 
@@ -10,8 +11,9 @@
 import DetailNavBar from './childComps/DetailNavBar'
 import DetailSwiper from './childComps/DetailSwiper'
 import DetailGoodsInfo from './childComps/DetailGoodsInfo';
+import DetailShopInfo from './childComps/DetailShopInfo';
 
-import { getDetailData, goodsInfo } from 'network/detail'
+import { getDetailData, GoodsInfo, ShopInfo } from 'network/detail'
 
 export default {
   name: 'Detail',
@@ -19,12 +21,14 @@ export default {
     DetailNavBar,
     DetailSwiper,
     DetailGoodsInfo,
+    DetailShopInfo
   },
   data() {
     return {
       iid: null,
       topImages: null,
       goodsInfo: {},
+      shopInfo: {},
     }
   },
   created() {
@@ -44,8 +48,10 @@ export default {
         this.topImages = res.result.itemInfo.topImages;
 
         // 3.商品基本信息
-        this.goodsInfo = new goodsInfo(data.itemInfo, data.columns, data.shopInfo.services);
+        this.goodsInfo = new GoodsInfo(data.itemInfo, data.columns, data.shopInfo.services);
         
+        // 4.店铺基本信息
+        this.shopInfo = new ShopInfo(data.shopInfo);
       })
     }
   }
