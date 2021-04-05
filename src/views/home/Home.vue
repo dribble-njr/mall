@@ -106,10 +106,9 @@ export default {
      * 先暂定用这种方法
      * 不应放在created中，因为那时可能还没加载完dom
      */
-    this.$bus.$on('itemImageLoad', () => {
-      // console.log('------');
-      this.$refs.scroll.refresh();
-    })
+    // this.$bus.$on('itemImageLoad', () => {
+    //   this.$refs.scroll.refresh();
+    // })
   },
   methods: {
     /**
@@ -174,7 +173,6 @@ export default {
 <style scoped>
 #home {
   height: 100vh;
-  overflow: hidden;
 }
 
 .home-nav {
