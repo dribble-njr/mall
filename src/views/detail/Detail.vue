@@ -3,7 +3,7 @@
     <detail-nav-bar/>
     <scroll class="wrapper">
       <detail-swiper :topImages="topImages" />
-      <detail-goods-info :goodsInfo="goodsInfo"/>
+      <detail-base-info :goodsInfo="goodsInfo"/>
       <detail-shop-info :shopInfo="shopInfo"/>
     </scroll>
   </div>
@@ -12,7 +12,7 @@
 <script>
 import DetailNavBar from './childComps/DetailNavBar'
 import DetailSwiper from './childComps/DetailSwiper'
-import DetailGoodsInfo from './childComps/DetailGoodsInfo';
+import DetailBaseInfo from './childComps/DetailBaseInfo';
 import DetailShopInfo from './childComps/DetailShopInfo';
 
 import Scroll from 'components/common/scroll/Scroll'
@@ -24,7 +24,7 @@ export default {
   components: {
     DetailNavBar,
     DetailSwiper,
-    DetailGoodsInfo,
+    DetailBaseInfo,
     DetailShopInfo,
 
     Scroll,
