@@ -60,10 +60,10 @@ export default {
   },
   created() {
     this._initDetail()
-    console.log(this.$route.path);
   },
   mounted() {
-    this.$bus.$on('detailItemImageLoad', () => {
+    const iid = this.$route.query.iid;
+    this.$bus.$on('detailItemImageLoad' + iid, () => {
       this.$refs.scroll.refresh();
     })
   },

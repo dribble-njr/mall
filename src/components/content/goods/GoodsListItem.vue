@@ -28,7 +28,8 @@ export default {
       if (this.$route.path.indexOf('/home') !== -1) {
         this.$bus.$emit('homeItemImageLoad')
       } else if (this.$route.path.indexOf('/detail') !== -1) {
-        this.$bus.$emit('detailItemImageLoad')
+        const iid = this.$route.query.iid;
+        this.$bus.$emit('detailItemImageLoad' + iid)
       }
     },
     itemClick() {
