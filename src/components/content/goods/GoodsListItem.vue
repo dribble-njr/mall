@@ -30,7 +30,6 @@ export default {
       } else if (this.$route.path.indexOf('/detail') !== -1) {
         this.$bus.$emit('detailItemImageLoad')
       }
-      
     },
     itemClick() {
       this.$router.push({
