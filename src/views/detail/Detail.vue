@@ -1,14 +1,14 @@
 <template>
   <div id="detail">
-    <detail-nav-bar/>
-    <scroll class="wrapper" ref="scroll">
+    <detail-nav-bar @titleClick="titleClick" ref="nav"/>
+    <scroll class="wrapper" ref="scroll" :probeType="3" @scroll="contentScroll" :listenScroll="true">
       <detail-swiper :topImages="topImages" />
       <detail-base-info :goodsInfo="goodsInfo"/>
       <detail-shop-info :shopInfo="shopInfo"/>
       <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad"/>
-      <detail-param-info :paramInfo="paramInfo"/>
-      <detail-comment-info :commentInfo="commentInfo"/>
-      <detail-recommend :recommends="recommends"/>
+      <detail-param-info ref="params" :paramInfo="paramInfo"/>
+      <detail-comment-info ref="comments" :commentInfo="commentInfo"/>
+      <detail-recommend ref="recommends" :recommends="recommends"/>
     </scroll>
   </div>
 </template>
@@ -25,7 +25,9 @@ import DetailRecommend from './childComps/DetailRecommend'
 
 import Scroll from 'components/common/scroll/Scroll'
 
-import { getDetailData, GoodsInfo, ShopInfo, GoodsParam, getRecommend } from 'network/detail'
+import { getDetailData, GoodsInfo, ShopInfo, GoodsParam, getRecommend } from 'network/detail';
+
+import { debounce } from '@/common/utils';
 
 export default {
   name: 'Detail',
@@ -50,11 +52,15 @@ export default {
       detailInfo: {},
       paramInfo: {},
       commentInfo: {},
-      recommends: []
+      recommends: [],
+      themeTopY: [], //记录内容的offsetTop
+      getThemeTopY: null, // 防抖函数
+      currentIndex: 0, // 联动
     }
   },
   created() {
     this._initDetail()
+    console.log(this.$route.path);
   },
   mounted() {
     this.$bus.$on('detailItemImageLoad', () => {
@@ -68,7 +74,6 @@ export default {
       getDetailData(this.iid).then(res => {
         // 1.获取数据
         const data = res.result;
-        console.log(data);
 
         // 2.轮播图数据
         this.topImages = res.result.itemInfo.topImages;
@@ -95,11 +100,32 @@ export default {
       })
       getRecommend().then((res) => {
         this.recommends = res.data.list;
-        console.log(this.recommends);
       })
+      this.getThemeTopY = debounce(() => {
+        this.themeTopY = [];
+        this.themeTopY.push(0);
+        this.themeTopY.push(this.$refs.params.$el.offsetTop - 44);
+        this.themeTopY.push(this.$refs.comments.$el.offsetTop - 44);
+        this.themeTopY.push(this.$refs.recommends.$el.offsetTop - 44);
+        this.themeTopY.push(Infinity)
+      }, 200)
     },
     imageLoad() {
       this.$refs.scroll.refresh();
+      this.getThemeTopY();
+    },
+    titleClick(index) {
+      this.$refs.scroll.scrollTo(0, -this.themeTopY[index])
+    },
+    contentScroll(pos) {
+      let posY = -pos.y;
+      const len = this.themeTopY.length;
+      for (let i = 0; i < len - 1; i++) {
+        if (this.currentIndex !== i && posY >= this.themeTopY[i] && posY < this.themeTopY[i+1]) {
+          this.currentIndex = i;
+          this.$refs.nav.currentIndex = this.currentIndex;
+        }
+      }
     }
   }
 }
