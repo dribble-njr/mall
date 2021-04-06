@@ -45,9 +45,10 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabcontrol/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll.vue";
-import BackTop from "components/content/backtop/BackTop";
 
 import { getHomeMultiData, getHomeGoods } from "network/home";
+
+import { backTopMixin } from "@/common/mixin"
 
 export default {
   name: "Home",
@@ -60,8 +61,8 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop,
   },
+  mixins: [backTopMixin],
   data() {
     return {
       banners: [],
@@ -72,7 +73,6 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
-      isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
     };
@@ -147,10 +147,6 @@ export default {
       }
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
-    },
-
-    backTop() {
-      this.$refs.scroll.scrollTo(0, 0);
     },
 
     handleScroll(pos) {

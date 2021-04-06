@@ -10,6 +10,8 @@
       <detail-comment-info ref="comments" :commentInfo="commentInfo"/>
       <detail-recommend ref="recommends" :recommends="recommends"/>
     </scroll>
+    <back-top @click.native="backTop" v-show="isShowBackTop" />
+    <detail-bottom-bar/>
   </div>
 </template>
 
@@ -21,12 +23,14 @@ import DetailShopInfo from './childComps/DetailShopInfo';
 import DetailGoodsInfo from './childComps/DetailGoodsInfo';
 import DetailParamInfo from './childComps/DetailParamInfo';
 import DetailCommentInfo from './childComps/DetailCommentInfo';
-import DetailRecommend from './childComps/DetailRecommend'
+import DetailRecommend from './childComps/DetailRecommend';
+import DetailBottomBar from './childComps/DetailBottomBar';
 
 import Scroll from 'components/common/scroll/Scroll'
 
 import { getDetailData, GoodsInfo, ShopInfo, GoodsParam, getRecommend } from 'network/detail';
 
+import { backTopMixin } from "@/common/mixin"
 import { debounce } from '@/common/utils';
 
 export default {
@@ -40,9 +44,11 @@ export default {
     DetailParamInfo,
     DetailCommentInfo,
     DetailRecommend,
+    DetailBottomBar,
 
     Scroll,
   },
+  mixins: [backTopMixin],
   data() {
     return {
       iid: null,
@@ -120,12 +126,15 @@ export default {
     contentScroll(pos) {
       let posY = -pos.y;
       const len = this.themeTopY.length;
+
       for (let i = 0; i < len - 1; i++) {
         if (this.currentIndex !== i && posY >= this.themeTopY[i] && posY < this.themeTopY[i+1]) {
           this.currentIndex = i;
           this.$refs.nav.currentIndex = this.currentIndex;
         }
       }
+
+      this.isShowBackTop = -pos.y > 1000;
     }
   }
 }
@@ -133,7 +142,7 @@ export default {
 
 <style scoped>
 #detail {
-  /* overflow: hidden; */
+  overflow: hidden;
   height: 100vh;
   position: relative;
   z-index: 9;
@@ -141,6 +150,6 @@ export default {
 }
 
 .wrapper {
-  height: calc(100% - 44px);
+  height: calc(100% - 44px - 49px);
 }
 </style>
