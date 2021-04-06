@@ -1,3 +1,16 @@
+// 公共方法
+// 防抖操作
+export function debounce (func, delay){ 
+  let timer = null
+  return function (...args){
+    if(timer) clearTimeout(timer)
+
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, delay)
+  }
+}
+
 // 时间戳转化
 export function formatDate(date, fmt) {
   if(/(y+)/.test(fmt)) {
@@ -21,4 +34,4 @@ export function formatDate(date, fmt) {
 
 function padLeftZero (str) {
   return ('00' + str).substr(str.length);
-};
+}
