@@ -1,6 +1,9 @@
 <template>
   <div id="detail">
     <detail-nav-bar @titleClick="titleClick" ref="nav"/>
+    <ul>
+      <li v-for="(item, index) in $store.cartList" :key="index">{{ item }}</li>
+    </ul>
     <scroll class="wrapper" ref="scroll" :probeType="3" @scroll="contentScroll" :listenScroll="true">
       <detail-swiper :topImages="topImages" />
       <detail-base-info :goodsInfo="goodsInfo"/>
@@ -11,7 +14,7 @@
       <detail-recommend ref="recommends" :recommends="recommends"/>
     </scroll>
     <back-top @click.native="backTop" v-show="isShowBackTop" />
-    <detail-bottom-bar/>
+    <detail-bottom-bar @addToCart="addToCart"/>
   </div>
 </template>
 
@@ -62,6 +65,7 @@ export default {
       themeTopY: [], //记录内容的offsetTop
       getThemeTopY: null, // 防抖函数
       currentIndex: 0, // 联动
+      product: {},
     }
   },
   created() {
@@ -135,6 +139,18 @@ export default {
       }
 
       this.isShowBackTop = -pos.y > 1000;
+    },
+    addToCart() {
+      // 1.获取购物车所需信息
+      this.product.iid = this.iid;
+      this.product.img = this.topImages[0];
+      this.product.title = this.goodsInfo.title;
+      this.product.desc = this.goodsInfo.desc;
+      this.product.newPrice = this.goodsInfo.realPrice;
+      console.log(this.product);
+
+      // 2.将商品添加到购物车里
+      this.$store.commit('addToCart', this.product)
     }
   }
 }
