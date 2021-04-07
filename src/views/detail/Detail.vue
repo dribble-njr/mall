@@ -34,7 +34,7 @@ import { backTopMixin } from "@/common/mixin"
 import { debounce } from '@/common/utils';
 
 export default {
-  name: 'Detail',
+  name: "Detail",
   components: {
     DetailNavBar,
     DetailSwiper,
@@ -86,7 +86,7 @@ export default {
 
         // 3.商品基本信息
         this.goodsInfo = new GoodsInfo(data.itemInfo, data.columns, data.shopInfo.services);
-        
+
         // 4.店铺基本信息
         this.shopInfo = new ShopInfo(data.shopInfo);
 
