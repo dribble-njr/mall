@@ -32,6 +32,6 @@ export default {
 } */
 
 .wrapper {
-  height: calc(100% - 44px - 49px);
+  height: calc(100% - 44px - 49px - 40px);
 }
 </style>

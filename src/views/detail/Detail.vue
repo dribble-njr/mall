@@ -12,6 +12,8 @@
     </scroll>
     <back-top @click.native="backTop" v-show="isShowBackTop" />
     <detail-bottom-bar @addToCart="addToCart"/>
+    <!-- 普通方式封装 --> 
+    <!-- <toast :message="message" :show="toastShow"/> -->
   </div>
 </template>
 
@@ -27,6 +29,8 @@ import DetailRecommend from './childComps/DetailRecommend';
 import DetailBottomBar from './childComps/DetailBottomBar';
 
 import Scroll from 'components/common/scroll/Scroll'
+// 普通方式封装
+// import Toast from 'components/common/toast/Toast'
 
 import { getDetailData, GoodsInfo, ShopInfo, GoodsParam, getRecommend } from 'network/detail';
 
@@ -47,8 +51,12 @@ export default {
     DetailBottomBar,
 
     Scroll,
+    // 普通方式封装toast
+    // Toast,
   },
+
   mixins: [backTopMixin],
+
   data() {
     return {
       iid: null,
@@ -62,6 +70,10 @@ export default {
       themeTopY: [], //记录内容的offsetTop
       getThemeTopY: null, // 防抖函数
       currentIndex: 0, // 联动
+
+      // 普通方式封装toast
+      // message: '',
+      // toastShow: false,
     }
   },
   created() {
@@ -147,7 +159,17 @@ export default {
       console.log(product);
 
       // 2.将商品添加到购物车里
-      this.$store.dispatch('addToCart', product)
+      this.$store.dispatch('addToCart', product).then(res => {
+        // 普通方式
+        // this.message = res;
+        // this.toastShow = true;
+        // setTimeout(() => {
+        //   this.message = '';
+        //   this.toastShow = false;
+        // }, 1500);
+
+        this.$toast.show(res);
+      })
     }
   }
 }
