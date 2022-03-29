@@ -96,6 +96,7 @@ export default {
     refresh() {
       // 等scroll加载完成
       this.scroll && this.scroll.refresh();
+      console.log('---');
     },
 
     getScrollY() {

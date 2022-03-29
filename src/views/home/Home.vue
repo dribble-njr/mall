@@ -48,7 +48,8 @@ import Scroll from "components/common/scroll/Scroll.vue";
 
 import { getHomeMultiData, getHomeGoods } from "network/home";
 
-import { backTopMixin } from "@/common/mixin"
+import { backTopMixin } from "@/common/mixin";
+import { debounce } from "@/common/utils";
 
 export default {
   name: "Home",
@@ -106,8 +107,9 @@ export default {
      * 先暂定用这种方法
      * 不应放在created中，因为那时可能还没加载完dom
      */
+    const refresh = debounce(this.$refs.scroll.refresh, 50);
     this.$bus.$on('homeItemImageLoad', () => {
-      this.$refs.scroll.refresh();
+      refresh();
     })
   },
   methods: {

@@ -81,8 +81,9 @@ export default {
   },
   mounted() {
     const iid = this.$route.query.iid;
+    const refresh = debounce(this.$refs.scroll.refresh, 50);
     this.$bus.$on('detailItemImageLoad' + iid, () => {
-      this.$refs.scroll.refresh();
+      refresh();
     })
   },
   methods: {
