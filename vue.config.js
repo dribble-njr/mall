@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/mall/',
   devServer: {
     hot: true
   },
